@@ -14,10 +14,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
 public class ComparatorTest {
 
 	String chromeDriverPath ;
-	@Test
+	
+	//@Test
 	public void TC01_getWeatherDataFromWeb() {
 		
 		chromeDriverPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
@@ -53,5 +58,21 @@ public class ComparatorTest {
 		System.out.println(temp);
 //		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(xpathExpression))))
 		driver.quit();
+	}
+	
+	@Test
+	public void TC02_getWeatherDataFromApi() {
+		
+		RequestSpecification requestObj = RestAssured.given();
+		requestObj.baseUri("https://api.openweathermap.org/");
+		requestObj.basePath("data/2.5/weather");
+		requestObj.queryParam("q", "Delhi,in");
+		requestObj.queryParam("APPID","7fe67bf08c80ded756e598d6f8fedaea");
+		requestObj.queryParam("units","metric");
+		requestObj.log().all();
+		Response response = requestObj.get();
+		System.out.println(response.body().asString());
+		System.out.println(response.jsonPath().get("main.temp").toString());
+		
 	}
 }
