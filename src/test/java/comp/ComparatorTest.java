@@ -22,7 +22,7 @@ public class ComparatorTest {
 
 	String chromeDriverPath ;
 	
-	//@Test
+	@Test
 	public void TC01_getWeatherDataFromWeb() {
 		
 		chromeDriverPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
@@ -48,19 +48,15 @@ public class ComparatorTest {
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("LocationSearch_input")));
 		WebElement searchField = driver.findElement(By.id("LocationSearch_input"));
 		searchField.sendKeys("Delhi");
-		 Actions builder = new Actions(driver);
-	     builder.sendKeys(searchField, Keys.ARROW_DOWN).perform();
 
-	     builder.sendKeys(searchField, Keys.ARROW_DOWN).perform();
-
-	     builder.sendKeys(searchField, Keys.ENTER).perform();
+	     wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Delhi']")));
+	     driver.findElement(By.xpath("//button[text()='Delhi']")).click();
 		String temp = driver.findElement(By.xpath("(//h1[contains(.,'Delhi')]/parent::*/following-sibling::*//span[@data-testid='TemperatureValue'])[1]")).getText();
 		System.out.println(temp);
-//		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(xpathExpression))))
-		driver.quit();
+//		driver.quit();
 	}
 	
-	@Test
+	//@Test
 	public void TC02_getWeatherDataFromApi() {
 		
 		RequestSpecification requestObj = RestAssured.given();
