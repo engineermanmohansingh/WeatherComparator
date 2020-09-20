@@ -85,7 +85,7 @@ public class ComparatorTest {
 
 	}
 
-	//@Test
+	@Test
 	public void TC02_getWeatherDataFromApi() {
 
 		RequestSpecification requestObj = RestAssured.given();
@@ -111,12 +111,12 @@ public class ComparatorTest {
 
 		Reporter.log("Comparing two temperature values");
 		System.out.println("Temperature extracted from API ="+tempFromApi +" ~ ? ~ Temperature extracted from Web ="+tempFromWeb);
-		int tempA = Integer.valueOf(tempFromApi);
-		int tempW = Integer.valueOf(tempFromWeb.substring(0,2));
+		float tempA = Float.valueOf(tempFromApi);
+		float tempW = Float.valueOf(tempFromWeb.substring(0,tempFromWeb.length()-1));
 		if((tempA-tempW)==0) {
 			Reporter.log("Two temperature values match exactly");
 		}else {
-			int res = Math.abs(tempA-tempW) ;
+			float res = Math.abs(tempA-tempW) ;
 			if(res<compTolerance) {
 				Reporter.log("Two values match within the tolerance range, unit difference observed -"+res+" and tolerance specified -"+compTolerance,true);
 			}else {
