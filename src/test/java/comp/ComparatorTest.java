@@ -24,15 +24,29 @@ import io.restassured.specification.RequestSpecification;
 public class ComparatorTest {
 
 	String chromeDriverPath, tempFromApi, tempFromWeb;
+	String os;
 	WebDriver driver;
 	WebDriverWait wait;
-	int compTolerance=3;
+	int compTolerance;
 	@BeforeClass
 	public void setup() {
+		compTolerance= Integer.valueOf(System.getProperty("tolerance","3"));
+		os = System.getProperty("os.name");
+		if(os.toLowerCase().contains("mac")) {
 		chromeDriverPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
 				+ File.separator + "resources" + File.separator + "Drivers" + File.separator + "Mac" + File.separator
 				+ "chromedriver";
-
+		}else if(os.toLowerCase().contains("windows")) {
+			chromeDriverPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
+					+ File.separator + "resources" + File.separator + "Drivers" + File.separator + "Windows" + File.separator
+					+ "chromedriver.exe";
+			
+		}else if(os.toLowerCase().contains("linux")) {
+			chromeDriverPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main"
+					+ File.separator + "resources" + File.separator + "Drivers" + File.separator + "Linux" + File.separator
+					+ "chromedriver";
+			
+		}
 		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 		ChromeOptions options = new ChromeOptions();
 
